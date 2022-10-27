@@ -103,6 +103,7 @@ CreateThread(function()
 				local model = GetEntityModel(CURRENT_VEHICLE)
 				local netId = VehToNet(CURRENT_VEHICLE)
                 --print(string.format("LEFT: %s %s %s", CURRENT_VEHICLE, CURRENT_SEAT, netId))
+                TriggerEvent('events:LeftVehicle', CURRENT_VEHICLE, CURRENT_SEAT, netId)
 				TriggerServerEvent('events:LeftVehicle', CURRENT_VEHICLE, CURRENT_SEAT, netId)
 				IN_VEHICLE = false
 				CURRENT_VEHICLE = 0
@@ -116,13 +117,13 @@ CreateThread(function()
                 CURRENT_HORSE = GetMount(ped)
                 ON_HORSE = true
                 local netId = NetworkGetNetworkIdFromEntity(CURRENT_HORSE)
-                TriggerClientEvent('events:MountOn', netId)
+                TriggerEvent('events:MountOn', netId)
                 TriggerServerEvent('events:MountOn', netId)
             end
         elseif ON_HORSE then
             if not IsPedOnMount(ped) then
                 local netId = NetworkGetNetworkIdFromEntity(CURRENT_HORSE)
-                TriggerClientEvent('events:MountOff', netId)
+                TriggerEvent('events:MountOff', netId)
                 TriggerServerEvent('events:MountOff', netId)
                 ON_HORSE = false
                 CURRENT_HORSE = nil
