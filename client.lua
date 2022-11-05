@@ -11,6 +11,8 @@ local VehToNet = VehToNet
 local IsPedOnMount = IsPedOnMount
 local GetMount = GetMount
 local NetworkGetNetworkIdFromEntity = NetworkGetNetworkIdFromEntity
+local GetSelectedPedWeapon = GetSelectedPedWeapon
+local IsPlayerDead = IsPlayerDead
 
 local GetNumberOfEvents = GetNumberOfEvents
 local GetEventAtIndex = GetEventAtIndex
@@ -22,6 +24,8 @@ local IN_VEHICLE = false
 local ENTERING_VEHICLE = false
 local CURRENT_VEHICLE = nil
 local CURRENT_SEAT = nil
+local CURRENT_WEAPON = nil
+local HOLDING_WEAPON = false
 
 
 local function GetPedVehicleSeat(ped)
@@ -46,6 +50,14 @@ end)
 
 exports("Horse", function()
     return CURRENT_HORSE
+end)
+
+exports("Weapon", function()
+    return CURRENT_WEAPON
+end)
+
+exports("HoldingWeapon", function()
+    return HOLDING_WEAPON
 end)
 
 CreateThread(function()
@@ -132,4 +144,23 @@ CreateThread(function()
 
         Wait(0)
 	end
+end)
+
+CreateThread(function()
+    while true do
+        local ped = PlayerPedId()
+        local weapon = GetSelectedPedWeapon(ped)
+        if not HOLDING_WEAPON and not IsPlayerDead(ped) and weapon ~= `WEAPON_UNARMED`then
+            HOLDING_WEAPON = true
+            CURRENT_WEAPON = weapon
+            TriggerEvent('events:holdingWeapon', weapon)
+            TriggerServerEvent('events:holdingWeapon', weapon)
+        elseif HOLDING_WEAPON and not IsPlayerDead(PlayerPed) and weapon == `WEAPON_UNARMED` then
+            TriggerEvent('events:holsterWeapon', weapon)
+            TriggerServerEvent('events:holsterWeapon', weapon)
+            CURRENT_WEAPON = nil
+            HOLDING_WEAPON = false
+        end
+        Wait(300)
+    end
 end)
