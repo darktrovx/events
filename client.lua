@@ -11,7 +11,6 @@ local VehToNet = VehToNet
 local IsPedOnMount = IsPedOnMount
 local GetMount = GetMount
 local NetworkGetNetworkIdFromEntity = NetworkGetNetworkIdFromEntity
-local GetSelectedPedWeapon = GetSelectedPedWeapon
 local IsPlayerDead = IsPlayerDead
 
 local GetNumberOfEvents = GetNumberOfEvents
@@ -149,7 +148,7 @@ end)
 CreateThread(function()
     while true do
         local ped = PlayerPedId()
-        local weapon = GetSelectedPedWeapon(ped)
+        local weapon = Citizen.InvokeNative(0x8425C5F057012DAB, ped)
         if not HOLDING_WEAPON and not IsPlayerDead(ped) and weapon ~= `WEAPON_UNARMED`then
             HOLDING_WEAPON = true
             CURRENT_WEAPON = weapon
