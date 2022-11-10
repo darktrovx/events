@@ -71,8 +71,8 @@ CreateThread(function()
                     if DEBUG then
                         print(EVENTS[eventAtIndex].name)
                     end
-                    TriggerEvent("events:listener", EVENTS[eventAtIndex].name)
-                    TriggerServerEvent("events:listener", EVENTS[eventAtIndex].name)
+                    TriggerEvent("events:listener", EVENTS[eventAtIndex].name, index, eventAtIndex)
+                    TriggerServerEvent("events:listener", EVENTS[eventAtIndex].name, index, eventAtIndex)
                 end
             end
         end

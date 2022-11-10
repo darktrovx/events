@@ -6,8 +6,14 @@ lua54 'yes'
 
 client_scripts {
 	'client.lua',
+    'dataview.js',
     "events.lua"
 }
 server_scripts {
     'server.lua'
 }
+
+exports {
+	'DataViewGetEventData'
+}
+
